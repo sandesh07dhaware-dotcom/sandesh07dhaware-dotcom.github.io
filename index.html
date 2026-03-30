@@ -697,7 +697,7 @@ function buildCards(search){
     if(filterQ==='all')return m&&!isClosed;
     if(['Hot','Warm','Cold'].includes(filterQ))return m&&l.quality===filterQ&&!isClosed;
     return m&&l.stage===filterQ;
-  }).sort((a,b)=>(b.dateAdded||'').localeCompare(a.dateAdded||''));
+  }).sort((a,b)=>{const da=b.dateAdded||'';const db2=a.dateAdded||'';const cmp=da.localeCompare(db2);return cmp!==0?cmp:(b.id||'').localeCompare(a.id||'');});
   if(!f.length)return`<div class="empty"><div class="ei">${arr().length?'🔍':'👤'}</div><div class="et">${arr().length?'No results':'No leads yet'}</div><div class="es">${arr().length?'Try a different filter':'Tap + to add your first lead'}</div></div>`;
   return f.map(l=>{
     const qc=(l.quality||'cold').toLowerCase();
@@ -1095,8 +1095,8 @@ window.delProject=id=>{
 /* ═══ CLOSED LEADS ═══ */
 function renderClosed(){
   const a=arr();
-  const won=a.filter(l=>l.stage==='Closed Won').sort((x,y)=>(y.dateAdded||'').localeCompare(x.dateAdded||''));
-  const lost=a.filter(l=>l.stage==='Closed Lost').sort((x,y)=>(y.dateAdded||'').localeCompare(x.dateAdded||''));
+  const won=a.filter(l=>l.stage==='Closed Won').sort((x,y)=>{const da=(y.dateAdded||''),db2=(x.dateAdded||'');const c=da.localeCompare(db2);return c!==0?c:(y.id||'').localeCompare(x.id||'');});
+  const lost=a.filter(l=>l.stage==='Closed Lost').sort((x,y)=>{const da=(y.dateAdded||''),db2=(x.dateAdded||'');const c=da.localeCompare(db2);return c!==0?c:(y.id||'').localeCompare(x.id||'');});
 
   function closedCard(l){
     return`<div class="lead-card" style="border-left:4px solid ${l.stage==='Closed Won'?'#1a7a3c':'#c0392b'}" onclick="openDetail('${l.id}')">
